@@ -5,7 +5,7 @@ import { Button, Input } from 'element-ui';
 
 
 // 导入组件库
-import  vtree  from '../src'
+import  vtree  from '../dist'
 
 // 注册组件库
 Vue.use(vtree)

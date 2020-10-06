@@ -1,6 +1,5 @@
 import './reset.css';
-import Vtree from '../packages/vtree';
-
+import Vtree from '../packages/vtree/index.vue';
 
 const components = [
   Vtree

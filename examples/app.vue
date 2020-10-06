@@ -1,7 +1,7 @@
 <template>
   <div class="vtree">
     <el-input v-model="input"  placeholder="输入过滤值" />
-    <vTree ref="tree" :defaultCheckedKeys="[100001]" :data="totalList" :filterNodeMethod="filterFn" />
+    <vTreeScroll ref="tree" :defaultCheckedKeys="[100001]" :data="totalList" :filterNodeMethod="filterFn" />
     
     <div class="btn">
       <el-button @click="setCheck">设置选中</el-button>
@@ -26,7 +26,7 @@ export default {
    
   },
   created() {
-    axios.get('http://rap2.taobao.org:38080/app/mock/16107/api/tree').then(res => {
+    axios.get('http://rap2api.taobao.org/app/mock/16107/api/tree').then(res => {
         this.totalList = res.data.data
     })
   },

@@ -501,7 +501,7 @@ export default {
         li{
             position: relative;
             padding-left: 20px;
-            /deep/ .el-checkbox{
+            ::v-deep .el-checkbox{
                 top: -1px;
                 position: relative;
                 text-indent: 0;
