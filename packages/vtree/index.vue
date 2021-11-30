@@ -2,7 +2,7 @@
     <div class="list" ref="list" :style="'line-height:'+ lineHeight+'px'">
         <div class="space" ref="space"></div>
         <ul ref="listUl">
-            <li v-for="(item) in list" :style="'text-indent:'+1.2*item.level+'em'"  :key="item[nodeKey]"> 
+            <li  v-for="(item) in list" :style="'height:'+ lineHeight+'px;text-indent:'+0.5*item.level+'em'"  :key="item[nodeKey]"> 
                 <i @click="_changeStatus(item,$event)" :style="'left: '+Number(item.level*20+3)+'px;'"  v-if="item.haschildren" :class="item.expandStatus?'hide':''" class="el-icon-arrow-down"></i> 
                 <el-checkbox v-if="showCheckbox" :indeterminate="item.isIndeterminate" @change="_checkBoxchange(item)" v-model="item.checked" /> {{item[props.label]}}
             </li>
@@ -147,10 +147,10 @@ export default {
 
         // 动态计算需要展示多少行
         this.$nextTick(() => {
-            this.linesNum = parseInt(this.$refs.list.offsetHeight)/this.lineHeight + LINES 
+            this.linesNum = parseInt((this.$refs.list.offsetHeight)/this.lineHeight) + LINES 
         })
         window.onresize = () => {
-            this.linesNum = parseInt(this.$refs.list.offsetHeight)/this.lineHeight + LINES
+            this.linesNum = parseInt((this.$refs.list.offsetHeight)/this.lineHeight) + LINES
             this._wheelFn()
         }
   
@@ -163,7 +163,14 @@ export default {
             let num = this._totalHeight - this._listHeight
             this.$refs.listUl.style.top = Math.min(num>0?num:0,Math.max(top, 0)) + 'px'
             let start = parseInt(top/this.lineHeight)
-            this.list = this.listData.filter(item => !item.hide).filter(item => item.visible !== false).slice(start, start+this.linesNum)
+            let arr = this.listData.filter(item => !item.hide).filter(item => item.visible !== false)
+            let end =  Math.min(start + this.linesNum, arr.length)
+            // 处理边界问题 #issues1
+            if((end - start) < this.linesNum) {
+                let a = end - this.linesNum
+                start =  a < 0 ? 0: a
+            }
+            this.list = arr.slice(start, end)
         },
         // 点击展开收缩
         _changeStatus(node,e){
@@ -371,7 +378,7 @@ export default {
 
         // 刷新布局
         doLayout(){
-            this.linesNum = parseInt(this.$refs.list.offsetHeight)/this.lineHeight + LINES 
+            this.linesNum = parseInt((this.$refs.list.offsetHeight)/this.lineHeight) + LINES 
             this._wheelFn()
         },
         // 获取指定节点
@@ -474,7 +481,6 @@ export default {
     },
     watch:{
         data(v){
-            console.log('vvvvv',v)
             this.listData = treeTolist(v, this.nodeKey, this.defaultExpandAll)
             this.list = this._listDataFilter.slice(0, this.linesNum)
             this.$refs.space.style.height = this._totalHeight + 'px'
@@ -501,6 +507,7 @@ export default {
         li{
             position: relative;
             padding-left: 20px;
+            list-style: none;
             ::v-deep .el-checkbox{
                 top: -1px;
                 position: relative;
@@ -515,7 +522,8 @@ export default {
                 text-indent: 0;
                 left: 5px;
                 top: 50%;
-                margin-top: -4px;
+                margin-top: -6px;
+                z-index: 9;
                 &.hide{
                     transform-origin: 50% 50%;
                     transform: rotate(-90deg);

@@ -1,7 +1,7 @@
 {
   "name": "v-tree-scroll",
   "description": "虚拟树滚动",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "author": "xyl <786549791@qq.com>",
   "license": "MIT",
   "main": "dist/index.js",
@@ -49,6 +49,7 @@
   },
   "dependencies": {
     "axios": "^0.20.0",
+    "babel-loader": "^8.2.3",
     "element-ui": "^2.13.2",
     "vue": "^2.6.12"
   },
