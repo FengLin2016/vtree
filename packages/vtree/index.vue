@@ -1,6 +1,6 @@
 <template>
   <div class="list" ref="list" :style="'line-height:' + lineHeight + 'px'">
-    <div class="space" ref="space"></div>
+    <div class="space" ref="space" :style="'height:' + _listDataFilter.length * lineHeight + 'px'"></div>
     <ul ref="listUl">
       <li
         v-for="item in list"
@@ -17,7 +17,7 @@
         ></i>
         <i v-else>&nbsp;</i>
         <el-checkbox
-          v-if="showCheckbox"
+          v-if="multiple"
           :indeterminate="item.isIndeterminate"
           @change="_checkBoxchange(item)"
           v-model="item.checked"
@@ -112,7 +112,7 @@ export default {
       type: Boolean,
       default: false,
     },
-    showCheckbox: {
+    multiple: {
       type: Boolean,
       default: false,
     },
@@ -439,6 +439,14 @@ export default {
       });
     },
 
+    //返回半选节点
+    getHalfCheckedNodes() {
+      let arr = Array.from(this.selectNodes);
+      return arr.filter((item) => {
+        return item.isIndeterminate;
+      });
+    },
+
     //返回选中节点key
     getCheckedKeys(half) {
       return this.getCheckedNodes(half).map((item) => {
@@ -510,7 +518,6 @@ export default {
       }
 
       this.$set(this, "list", this._listDataFilter.slice(0, this.linesNum));
-      this.$refs.space.style.height = this._totalHeight + "px";
       this.$refs.list.scrollTop = 0;
     },
   },
@@ -524,11 +531,10 @@ export default {
             this.multiple ? this.selectedId : [this.selectedId],
             this.nodeKey
           );
-          this.list = this._listDataFilter.slice(0, this.linesNum);
-          this.$refs.space.style.height = this._totalHeight + "px";
-          this._wheelFn();
-          // 默认选中设置
-          this.setCheckedKeys(this.defaultCheckedKeys);
+          this.$nextTick(() => {
+            this.list = this._listDataFilter.slice(0, this.linesNum);
+            this._wheelFn();
+          })
         }
       },
       immediate: true,
@@ -555,7 +561,7 @@ export default {
       padding-left: 20px;
       list-style: none;
       ::v-deep .el-checkbox {
-        top: -1px;
+        top: 2px;
         position: relative;
         text-indent: 0;
       }

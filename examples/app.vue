@@ -1,7 +1,7 @@
 <template>
   <div class="vtree">
     <el-input v-model="input"  placeholder="输入过滤值" />
-    <vTreeScroll ref="tree" showCheckbox v-model="defaultCheckedKeys" :data="totalList" :filterNodeMethod="filterFn" />
+    <vTreeScroll ref="tree" multiple v-model="defaultCheckedKeys" :data="totalList" :filterNodeMethod="filterFn" />
 
     <div class="btn">
       <el-button @click="setCheck">设置选中</el-button>
