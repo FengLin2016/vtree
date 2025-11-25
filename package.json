@@ -1,7 +1,7 @@
 {
   "name": "v-tree-scroll",
   "description": "虚拟树滚动",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "author": "xyl <786549791@qq.com>",
   "license": "MIT",
   "main": "dist/index.js",
