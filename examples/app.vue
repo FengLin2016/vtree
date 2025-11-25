@@ -1,15 +1,15 @@
 <template>
   <div class="vtree">
     <el-input v-model="input"  placeholder="输入过滤值" />
-    <vTreeScroll ref="tree" :defaultCheckedKeys="[100001]" :data="totalList" :filterNodeMethod="filterFn" />
-    
+    <vTreeScroll ref="tree" showCheckbox v-model="defaultCheckedKeys" :data="totalList" :filterNodeMethod="filterFn" />
+
     <div class="btn">
       <el-button @click="setCheck">设置选中</el-button>
       <el-button @click="clear">清空</el-button>
       <el-button @click="filter(input)">筛选</el-button>
       <el-button @click="filter()">筛选清空</el-button>
     </div>
-    
+
   </div>
 </template>
 
@@ -18,12 +18,13 @@ import axios from 'axios'
 export default {
   data() {
     return {
+        defaultCheckedKeys: [100001],
         totalList: [],
         input: ''
     }
   },
   watch: {
-   
+
   },
   created() {
     axios.get('http://rap2api.taobao.org/app/mock/16107/api/tree').then(res => {

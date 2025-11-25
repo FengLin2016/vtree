@@ -9,7 +9,7 @@
   "repository": "https://github.com/FengLin2016/vtree",
   "scripts": {
     "dev": "cross-env NODE_ENV=development webpack-dev-server --open --hot",
-    "build": "cross-env NODE_ENV=production webpack --config ./webpack.config.build.js --progress --hide-modules"
+    "build": "cross-env NODE_ENV=production rollup -c"
   },
   "keywords": [
     "v-tree-scroll",
