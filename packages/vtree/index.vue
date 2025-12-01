@@ -551,7 +551,7 @@ export default {
   overflow: auto;
   flex: 1;
   position: relative;
-
+  height: 100%;
   ul {
     list-style: none;
     user-select: none;
@@ -601,6 +601,7 @@ export default {
         text-overflow: ellipsis;
         overflow: hidden;
         font-size: 16px;
+        color: #606266 !important;
         line-height: 16px !important;
       }
       .el-checkbox__input.is-checked + .el-checkbox__label {
