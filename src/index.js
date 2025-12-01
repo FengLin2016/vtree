@@ -1,6 +1,5 @@
-import './reset.css';
 import Vtree from '../packages/vtree/index.vue';
-
+const packageInfo = require('../package.json');
 const components = [
   Vtree
 ]
@@ -17,7 +16,7 @@ if (typeof window !== 'undefined' && window.Vue) {
 }
 
 export default {
-  version: '0.0.5',
+  version: packageInfo.version,
   install,
   Vtree
 }

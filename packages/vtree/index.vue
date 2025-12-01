@@ -13,7 +13,7 @@
           @click="_changeStatus(item, $event)"
           v-if="item.children"
           :class="item.expand ? 'hide' : ''"
-          class="el-icon-arrow-down"
+          class="el-icon-caret-bottom"
         ></i>
         <i v-else>&nbsp;</i>
         <el-checkbox
@@ -576,6 +576,7 @@ export default {
         width: 12px;
         display: inline-block;
         margin-top: -6px;
+        color: #c0c4cc;
         z-index: 9;
         &.hide {
           transform-origin: 50% 50%;

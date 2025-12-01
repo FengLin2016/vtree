@@ -1,7 +1,13 @@
 <template>
   <div class="vtree">
-    <el-input v-model="input"  placeholder="输入过滤值" />
-    <vTreeScroll ref="tree" multiple v-model="defaultCheckedKeys" :data="totalList" :filterNodeMethod="filterFn" />
+    <el-input v-model="input" placeholder="输入过滤值" />
+    <vTreeScroll
+      ref="tree"
+      multiple
+      v-model="defaultCheckedKeys"
+      :data="totalList"
+      :filterNodeMethod="filterFn"
+    />
 
     <div class="btn">
       <el-button @click="setCheck">设置选中</el-button>
@@ -9,47 +15,45 @@
       <el-button @click="filter(input)">筛选</el-button>
       <el-button @click="filter()">筛选清空</el-button>
     </div>
-
   </div>
 </template>
 
 <script>
-import axios from 'axios'
+import './reset.css';
+import axios from "axios";
 export default {
   data() {
     return {
-        defaultCheckedKeys: [100001],
-        totalList: [],
-        input: ''
-    }
+      defaultCheckedKeys: [100001],
+      totalList: [],
+      input: "",
+    };
   },
-  watch: {
-
-  },
+  watch: {},
   created() {
     axios.get('http://rap2api.taobao.org/app/mock/16107/api/tree').then(res => {
         this.totalList = res.data.data
     })
   },
   methods: {
-    filterFn(item, value){
-      return item.name.indexOf(value) > -1
+    filterFn(item, value) {
+      return item.name.indexOf(value) > -1;
     },
-    setCheck(){
-      this.$refs.tree.setCheckedKeys([100001])
+    setCheck() {
+      this.$refs.tree.setCheckedKeys([100001]);
     },
-    clear(){
-      this.$refs.tree.clear()
+    clear() {
+      this.$refs.tree.clear();
     },
-    filter(value){
-      this.$refs.tree.filter(value)
-    }
-  }
-}
+    filter(value) {
+      this.$refs.tree.filter(value);
+    },
+  },
+};
 </script>
 
 <style scoped lang="scss">
-.vtree{
+.vtree {
   height: 100%;
   display: flex;
   flex-direction: column;
