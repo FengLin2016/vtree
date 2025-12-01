@@ -4,6 +4,11 @@
     <vTreeScroll
       ref="tree"
       multiple
+      :props="{
+        children: 'children',
+        label: 'nodetext',
+      }"
+      node-key="nodeid"
       v-model="defaultCheckedKeys"
       :data="totalList"
       :filterNodeMethod="filterFn"
@@ -24,23 +29,50 @@ import axios from "axios";
 export default {
   data() {
     return {
-      defaultCheckedKeys: [100001],
+      defaultCheckedKeys: [ "b0a660bafe0cad2d7c36810d94438c68/34c9d55cef021fe90bbd4ebbd60d6a5a", "b0a660bafe0cad2d7c36810d94438c68/34c9d55cef021fe90bbd4ebbd60d6a5a/301c1eb2d8b24cb59c726adf629c2578" ],
       totalList: [],
       input: "",
     };
   },
   watch: {},
   created() {
-    axios.get('http://rap2api.taobao.org/app/mock/16107/api/tree').then(res => {
-        this.totalList = res.data.data
-    })
+    axios
+      .post(
+        "http://192.168.9.202:30001/dzjz-service/api/dzjzsystem/getDzjzTree",
+        { bmsah: "光明检刑诉受[2025]980102000005号", dwbm: "980102" }
+      )
+      .then((res) => {
+        this.totalList = Object.freeze(this.getTreeData(
+          res.data.data,
+          "nodeid",
+          "pnodeid",
+          ""
+        ));
+      });
   },
   methods: {
+    getTreeData(data, id, pid, pvalue, defaultChild = []) {
+      if (defaultChild === "undefined") defaultChild = undefined;
+      const _data = {};
+      data.map((item) => {
+        if (!_data[item[pid]]) _data[item[pid]] = [];
+        _data[item[pid]].push(item);
+      });
+      const root = _data[pvalue];
+      function inner(temp = [], defaultChild) {
+        return temp.map((item) => {
+          item.children = _data[item[id]] || defaultChild;
+          if (_data[item[id]]) inner(_data[item[id]], defaultChild);
+          return item;
+        });
+      }
+      return inner(root, defaultChild);
+    },
     filterFn(item, value) {
       return item.name.indexOf(value) > -1;
     },
     setCheck() {
-      this.$refs.tree.setCheckedKeys([100001]);
+      this.$refs.tree.setCheckedKeys(["b0a660bafe0cad2d7c36810d94438c68/34c9d55cef021fe90bbd4ebbd60d6a5a"]);
     },
     clear() {
       this.$refs.tree.clear();
