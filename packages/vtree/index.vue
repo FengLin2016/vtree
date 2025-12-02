@@ -49,7 +49,9 @@
           >{{ item[props.label] }}</el-checkbox
         >
         <!-- 单选文本 -->
-        <div v-else @click.exact="_nodeClick(item)">{{ item[props.label] }}</div>
+        <div v-else @click.exact="_nodeClick(item)">
+          {{ item[props.label] }}
+        </div>
       </li>
     </ul>
     <!-- 无数据提示 -->
@@ -245,18 +247,26 @@ export default {
     getCheckedNodes() {
       return this.selectedArr;
     },
+    // 返回选中节点key
+    getCheckedKeys() {
+      return this.selectedArr.map((item) => item[this.nodeKey]);
+    },
+    // 返回指定节点
+    getNode(id) {
+      return treeMap[id].data;
+    },
     // 返回半选中节点
     getHalfCheckedNodes() {
       return this.listData
-          .filter((item) => item.isIndeterminate)
-          .map((item) => item.data);
+        .filter((item) => item.isIndeterminate)
+        .map((item) => item.data);
     },
     // 设置选中节点
     setCheckedKeys(vals) {
       for (let index = 0; index < this.listData.length; index++) {
         const item = this.listData[index];
         item.checked = false;
-        if(vals.includes(item[this.nodeKey])) {
+        if (vals.includes(item[this.nodeKey])) {
           this._changeBox(item);
         }
       }
@@ -268,33 +278,41 @@ export default {
         item.checked = false;
         item.isIndeterminate = false;
       }
+      this.key = Math.random();
+      this._emitChange()
     },
     // 搜索
     filter(value) {
       this.searchText = value;
     },
-    _allChange(value) {
-      this.listData.forEach((item) => {
-        item.checked = value;
-      });
-      this.$emit(
-        "change",
-        this.selectedArr.map((item) => item[this.nodeKey])
-      );
-    },
-    _nodeClick(data) {
+    _emitChange() {
       if (this.multiple) {
         this.$emit(
           "change",
           this.selectedArr.map((item) => item[this.nodeKey])
         );
       } else {
+        this.$emit("change", this.selectedArr[0][this.nodeKey]);
+      }
+    },
+    // 全选
+    allChange(value) {
+      for (let index = 0; index < this.listData.length; index++) {
+        const item = this.listData[index];
+        item.checked = value;
+        item.isIndeterminate = false;
+      }
+      this.key = Math.random();
+      this._emitChange()
+    },
+    _nodeClick(data) {
+      if (!this.multiple) {
         if (this.selectedArr[0]) {
           this.selectedArr[0].checked = false;
         }
         data.checked = true;
-        this.$emit("change", this.selectedArr[0][this.nodeKey]);
       }
+      this._emitChange()
     },
     _changeBox(item) {
       const startIndex = item.idx;
@@ -534,7 +552,7 @@ export default {
             this.props.label
           );
           // 选中默认
-          if(this.selectedId && this.selectedId.length) {
+          if (this.selectedId && this.selectedId.length) {
             this.setCheckedKeys(this.selectedId);
           }
           this._wheelFn();

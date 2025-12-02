@@ -15,6 +15,7 @@
     />
 
     <div class="btn">
+      {{defaultCheckedKeys}}
       <el-button @click="setCheck">设置选中</el-button>
       <el-button @click="clear">清空</el-button>
       <el-button @click="filter(input)">筛选</el-button>

@@ -29,22 +29,19 @@ Vue.use(vTreeScroll)
 | lineHeight         |                                     30(Number) |    默认每行高    |
 | nodeKey            |                                     id(String) |       key        |
 | props              | \{ <br/>label: 'name', <br/> children: 'children' <br/>}(Object) | 默认数据级联结构 |
-| filterNodeMethod   |                                 Null(Function) |   默认过滤函数   |
 | defaultExpandAll   |                                 false(Boolean) |   是否默认展开   |
-| showCheckbox       |                                 true (Boolean) |  是否显示选择框  |
+| mutiple       |                                 true (Boolean) |  是否多选  |
 | checkStrictly      |                                false (Boolean) | 是否父子级不关联 |
-| defaultCheckedKeys |                                     \[](Array) |   默认选中节点   |
-| filterNodeMethod   |                                 Null(Function) |   默认过滤函数   |
 
 ## 方法
 
 | 方法名             |       备注       |
 | ------------------ |:--------------: |
-| doLayout()          |   强制刷新布局   |
 | getNode(key)        |   获取指定节点   |
 | getCheckedNodes(half)           |   返回选中节点(half是否返回半选)   |
 | getCheckedKeys(half)           |   返回选中节点key(half是否返回半选)   |
-| setCheckedKeys(keys, leafOnly)      |   设置节点选中(keys 设置的节点key数组;leafOnly 只是改变状态不涉及逻辑)   |
+| setCheckedKeys(keys)      |   设置节点选中(keys 设置的节点key数组)   |
 | clear()           |   清空选中   |
-| filter(value)      |   过滤数据(需要配合filterNodeMethod使用)   |
+| filter(value)      |   过滤数据  |
+| allChange(value)      |  全选数据  |
 
