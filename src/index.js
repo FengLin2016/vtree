@@ -1,7 +1,7 @@
-import Vtree from '../packages/vtree/index.vue';
+import virtualTree from '../packages/vtree/index.vue';
 const packageInfo = require('../package.json');
 const components = [
-  Vtree
+  virtualTree
 ]
 
 const install = function(Vue, opts = {}) {
@@ -18,5 +18,5 @@ if (typeof window !== 'undefined' && window.Vue) {
 export default {
   version: packageInfo.version,
   install,
-  Vtree
+  virtualTree
 }

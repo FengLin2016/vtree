@@ -9,12 +9,12 @@
 npm i v-tree-scroll -S
 
 # 引入组件
-import  vTreeScroll  from 'v-tree-scroll'
+import  virtualTree  from 'v-tree-scroll'
 
-Vue.use(vTreeScroll)
+Vue.use(virtualTree)
 
 # 使用
-<vTreeScroll  :data="totalList" />
+<virtualTree  :data="totalList" />
 
 ```
 
