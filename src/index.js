@@ -20,3 +20,7 @@ export default {
   install,
   virtualTree
 }
+// 单独导出组件
+export {
+  virtualTree
+}
