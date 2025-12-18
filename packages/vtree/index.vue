@@ -213,7 +213,7 @@ export default {
       if (this.key) {
         return this.listData
           .filter((item) => item.checked)
-          .map((item) => item.data);
+          .map((item) => item);
       }
     },
     _listDataFilter() {
@@ -245,7 +245,7 @@ export default {
   methods: {
     // 返回选中节点
     getCheckedNodes() {
-      return this.selectedArr;
+      return this.selectedArr.map((item) => item.data);
     },
     // 返回选中节点key
     getCheckedKeys() {
@@ -278,7 +278,6 @@ export default {
         item.checked = false;
         item.isIndeterminate = false;
       }
-      this.key = Math.random();
       this._emitChange()
     },
     // 搜索
@@ -286,13 +285,14 @@ export default {
       this.searchText = value;
     },
     _emitChange() {
+      this.key = Math.random();
       if (this.multiple) {
         this.$emit(
           "change",
           this.selectedArr.map((item) => item[this.nodeKey])
         );
       } else {
-        this.$emit("change", this.selectedArr[0][this.nodeKey]);
+        this.$emit("change", this.selectedArr[0]?this.selectedArr[0][this.nodeKey]:'');
       }
     },
     // 全选
@@ -302,7 +302,6 @@ export default {
         item.checked = value;
         item.isIndeterminate = false;
       }
-      this.key = Math.random();
       this._emitChange()
     },
     _nodeClick(data) {
@@ -551,6 +550,10 @@ export default {
             this.nodeKey,
             this.props.label
           );
+          // 如果是单选
+          if(!Array.isArray(this.selectedId)) {
+            this.selectedId = [this.selectedId];
+          }
           // 选中默认
           if (this.selectedId && this.selectedId.length) {
             this.setCheckedKeys(this.selectedId);
