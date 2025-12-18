@@ -131,7 +131,7 @@ function treeToListDFS(
 }
 
 export default {
-  name: "vTreeScroll",
+  name: "virtual-tree-scroll",
 
   data() {
     return {

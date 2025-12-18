@@ -1,11 +1,14 @@
 {
-  "name": "v-tree-scroll",
+  "name": "virtual-tree-scroll",
   "description": "虚拟树滚动",
-  "version": "1.0.3",
+  "version": "0.0.2",
   "author": "xyl <786549791@qq.com>",
   "license": "MIT",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
+  "files": [
+    "dist"
+  ],
   "repository": "https://github.com/FengLin2016/vtree",
   "scripts": {
     "dev": "cross-env NODE_ENV=development webpack-dev-server --open --hot",
