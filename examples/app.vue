@@ -1,7 +1,7 @@
 <template>
   <div class="vtree">
     <el-input v-model="input" placeholder="输入过滤值" />
-    <vTreeScroll
+    <virtualTree
       ref="tree"
       multiple
       :props="{

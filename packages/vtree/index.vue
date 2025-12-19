@@ -1,5 +1,5 @@
 <!--
-  VTreeSelect - 虚拟滚动树形选择器组件
+  virtualTree - 虚拟滚动树形选择器组件
 
   功能特性：
   - 支持虚拟滚动，处理大量数据
@@ -131,7 +131,7 @@ function treeToListDFS(
 }
 
 export default {
-  name: "virtual-tree-scroll",
+  name: "virtualTree",
 
   data() {
     return {

@@ -5,10 +5,10 @@ import 'element-ui/lib/theme-chalk/icon.css';
 
 
 // 导入组件库
-import  vtree  from '../src'
+import  virtualTree  from '../src'
 
 // 注册组件库
-Vue.use(vtree)
+Vue.use(virtualTree)
 Vue.use(element)
 
 Vue.config.productionTip = false
