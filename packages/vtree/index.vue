@@ -43,13 +43,13 @@
         <!-- 多选复选框 -->
         <el-checkbox
           v-if="multiple"
-          @change="_changeBox(item)"
+          @change="_changeBox(item, 'CHANGE')"
           :indeterminate="item.isIndeterminate"
           :checked="item.checked"
           >{{ item[props.label] }}</el-checkbox
         >
         <!-- 单选文本 -->
-        <div v-else @click.exact="_nodeClick(item)">
+        <div v-else @click.exact="_nodeClick(item, 'CHANGE')">
           {{ item[props.label] }}
         </div>
       </li>
@@ -147,7 +147,7 @@ export default {
   },
   model: {
     prop: "selectedId",
-    event: "change",
+    event: "model",
   },
   props: {
     selectedId: {
@@ -262,12 +262,12 @@ export default {
         .map((item) => item.data);
     },
     // 设置选中节点
-    setCheckedKeys(vals) {
+    setCheckedKeys(vals, type) {
       for (let index = 0; index < this.listData.length; index++) {
         const item = this.listData[index];
         item.checked = false;
         if (vals.includes(item[this.nodeKey])) {
-          this._changeBox(item);
+          this._changeBox(item, type);
         }
       }
     },
@@ -278,21 +278,27 @@ export default {
         item.checked = false;
         item.isIndeterminate = false;
       }
-      this._emitChange()
+      this._emitChange('CHANGE')
     },
     // 搜索
     filter(value) {
       this.searchText = value;
     },
-    _emitChange() {
+    _emitChange(type) {
       this.key = Math.random();
       if (this.multiple) {
         this.$emit(
-          "change",
+          "model",
           this.selectedArr.map((item) => item[this.nodeKey])
         );
+        if(type === 'CHANGE') {
+          this.$emit("change", this.selectedArr.map((item) => item[this.nodeKey]), this.selectedArr);
+        }
       } else {
-        this.$emit("change", this.selectedArr[0]?this.selectedArr[0][this.nodeKey]:'');
+        this.$emit("model", this.selectedArr[0]?this.selectedArr[0][this.nodeKey]:'');
+        if(type === 'CHANGE') {
+          this.$emit("change", this.selectedArr[0]?this.selectedArr[0][this.nodeKey]:'', this.selectedArr[0]);
+        }
       }
     },
     // 全选
@@ -302,25 +308,29 @@ export default {
         item.checked = value;
         item.isIndeterminate = false;
       }
-      this._emitChange()
+      this._emitChange('CHANGE')
     },
-    _nodeClick(data) {
+    /**
+     * @data 选择的数据
+     * @type 事件类型 init 初始化 change 改变
+     */
+    _nodeClick(data, type) {
       if (!this.multiple) {
         if (this.selectedArr[0]) {
           this.selectedArr[0].checked = false;
         }
         data.checked = true;
       }
-      this._emitChange()
+      this._emitChange(type)
     },
-    _changeBox(item) {
+    _changeBox(item, type) {
       const startIndex = item.idx;
       const currentNode = this.listData[startIndex];
       item.isIndeterminate = false;
       item.checked = !item.checked;
       // 如果不需要父子级联动，直接返回
       if (this.checkStrictly) {
-        this._nodeClick(item);
+        this._nodeClick(item, type);
         return;
       }
       // 1. 更新所有子节点状态（向下传播）
@@ -328,7 +338,7 @@ export default {
 
       // 2. 更新所有父节点状态（向上传播）
       this._updateParentStatus(item);
-      this._nodeClick(item);
+      this._nodeClick(item, type);
       this.key = Math.random();
     },
     /**
@@ -556,7 +566,7 @@ export default {
           }
           // 选中默认
           if (this.selectedId && this.selectedId.length) {
-            this.setCheckedKeys(this.selectedId);
+            this.setCheckedKeys(this.selectedId, 'init');
           }
           this._wheelFn();
         }
