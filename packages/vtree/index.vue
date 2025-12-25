@@ -561,12 +561,13 @@ export default {
             this.props.label
           );
           // 如果是单选
-          if(!Array.isArray(this.selectedId)) {
-            this.selectedId = [this.selectedId];
+          let selectedIdArr = this.selectedId
+          if(!Array.isArray(selectedIdArr)) {
+            selectedIdArr = [selectedIdArr];
           }
           // 选中默认
-          if (this.selectedId && this.selectedId.length) {
-            this.setCheckedKeys(this.selectedId, 'init');
+          if (selectedIdArr && selectedIdArr.length) {
+            this.setCheckedKeys(selectedIdArr, 'init');
           }
           this._wheelFn();
         }
